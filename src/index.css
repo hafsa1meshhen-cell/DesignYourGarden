@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 241 246 238;
+  --surface: 255 255 255;
+  --ink: 16 42 28;
+  --muted: 78 104 88;
+  --line: 22 70 40;
+  --leaf: 22 163 74;
+  --glass-alpha: 0.72;
+  --grid: 22 101 52;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 5 22 14;
+  --surface: 14 44 29;
+  --ink: 232 246 236;
+  --muted: 150 182 162;
+  --line: 190 242 205;
+  --leaf: 74 222 128;
+  --glass-alpha: 0.5;
+  --grid: 134 239 172;
+  color-scheme: dark;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    background-image:
+      radial-gradient(60rem 40rem at 10% -10%, rgb(var(--leaf) / 0.14), transparent 60%),
+      radial-gradient(50rem 30rem at 110% 10%, rgb(250 204 21 / 0.08), transparent 60%),
+      radial-gradient(40rem 40rem at 50% 120%, rgb(var(--leaf) / 0.08), transparent 60%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+  ::selection {
+    background: rgb(var(--leaf) / 0.35);
+  }
+  button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--leaf));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgb(var(--surface) / var(--glass-alpha));
+    border: 1px solid rgb(var(--line) / 0.12);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.06) inset,
+      0 20px 40px -24px rgb(0 0 0 / 0.45);
+  }
+  .glass-strong {
+    background: rgb(var(--surface) / 0.88);
+    border: 1px solid rgb(var(--line) / 0.14);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+  }
+  .text-gradient {
+    background: linear-gradient(100deg, #22c55e 0%, #84cc16 45%, #facc15 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-brand {
+    background: linear-gradient(110deg, #16a34a 0%, #4ade80 50%, #facc15 100%);
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 select-none disabled:opacity-50 disabled:pointer-events-none min-h-[44px];
+  }
+  .btn-primary {
+    @apply btn text-forest-900 bg-brand shadow-glow hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0;
+  }
+  .btn-ghost {
+    @apply btn text-ink bg-line/5 border border-line/15 hover:bg-line/10 hover:-translate-y-0.5;
+  }
+  .btn-danger {
+    @apply btn text-white bg-red-500/90 hover:bg-red-500;
+  }
+  .icon-btn {
+    @apply inline-flex items-center justify-center rounded-xl w-11 h-11 text-ink bg-line/5 border border-line/10 hover:bg-line/10 transition-colors disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .input {
+    @apply w-full rounded-xl bg-line/5 border border-line/15 px-3.5 py-2.5 text-ink placeholder:text-muted/70 outline-none transition focus:border-leaf/60 focus:ring-4 focus:ring-leaf/15 min-h-[44px];
+  }
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wider text-muted mb-1.5;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold border border-line/15 bg-line/5 text-ink transition-all min-h-[36px];
+  }
+  .chip-active {
+    @apply border-leaf/60 bg-leaf/15 text-leaf shadow-glow;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-glow;
+  }
+  .skeleton {
+    @apply rounded-xl bg-line/10 relative overflow-hidden;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(var(--line) / 0.12), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+}
+input[type='range'] {
+  accent-color: rgb(var(--leaf));
+}
