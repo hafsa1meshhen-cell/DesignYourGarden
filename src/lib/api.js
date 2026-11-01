@@ -11,7 +11,7 @@ export class ApiError extends Error {
 let onUnauthorized = null
 export const setUnauthorizedHandler = (fn) => (onUnauthorized = fn)
 
-const OFFLINE = 'We can’t reach the GardenCraft server. Check that “npm run dev” is running, then try again.'
+const OFFLINE = 'We can’t reach the GardenCraft server right now. Check your connection and try again in a moment.'
 const FRIENDLY = {
   400: 'Something in that request didn’t look right.',
   401: 'Please log in to continue.',
@@ -19,7 +19,7 @@ const FRIENDLY = {
   413: 'That upload is too large.',
   500: OFFLINE,
   502: OFFLINE,
-  503: 'We couldn’t open the GardenCraft database. Run “npm run db:setup” and restart the app.',
+  503: 'The garden database is temporarily unavailable. Please try again in a moment.',
   504: OFFLINE,
 }
 

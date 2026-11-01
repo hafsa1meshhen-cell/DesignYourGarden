@@ -1,18 +1,18 @@
 import { Router } from 'express'
-import * as db from '../db/client.js'
-import { requireAuth } from './_lib/auth.js'
-import { HttpError, asyncRoute } from './_lib/http.js'
-import { computeProfile } from '../src/lib/garden.js'
+import * as db from '../../db/client.js'
+import { requireAuth } from '../_lib/auth.js'
+import { HttpError, asyncRoute } from '../_lib/http.js'
+import { computeProfile } from '../../src/lib/garden.js'
 
 const r = Router()
 r.use(requireAuth)
-const byId = (rows) => Object.fromEntries(rows.map((x) => [x.id, x]))
+const byId = (list) => Object.fromEntries(list.map((x) => [x.id, x]))
 
 r.get('/', asyncRoute(async (req, res) => {
-  const user = db.findUserById(req.userId)
+  const user = await db.findUserById(req.userId)
   if (!user) throw new HttpError(401, 'Please log in to continue.')
-  const gardens = db.listGardens(req.userId)
-  res.json({ user, ...computeProfile(gardens, byId(db.listPlants()), byId(db.listMaterials())) })
+  const [gardens, plants, materials] = await Promise.all([db.listGardens(req.userId), db.listPlants(), db.listMaterials()])
+  res.json({ user, ...computeProfile(gardens, byId(plants), byId(materials)) })
 }))
 
 r.patch('/', asyncRoute(async (req, res) => {
@@ -28,7 +28,7 @@ r.patch('/', asyncRoute(async (req, res) => {
     patch.full_name = n
   }
   if (b.climate_zone !== undefined) patch.climate_zone = String(b.climate_zone).slice(0, 80)
-  res.json({ user: db.updateUser(req.userId, patch) })
+  res.json({ user: await db.updateUser(req.userId, patch) })
 }))
 
 export default r

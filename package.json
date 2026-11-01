@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n api,web -c green,cyan \"npm:dev:api\" \"npm:dev:web\"",
-    "dev:api": "node --watch api/server.js",
+    "dev:api": "node --watch api/_dev-server.js",
     "dev:web": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^12.4.1",
     "canvas-confetti": "^1.9.3",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
@@ -25,6 +24,7 @@
     "jspdf": "^2.5.2",
     "konva": "^9.3.18",
     "lucide-react": "^0.468.0",
+    "pg": "^8.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-konva": "^18.2.10",
@@ -38,5 +38,8 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.7"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
