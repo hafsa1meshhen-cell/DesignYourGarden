@@ -10,3 +10,4 @@ db/*.db-shm
 
 .vercel
 .env*
+!.env.example

@@ -34,8 +34,12 @@ function getPool() {
   if (!URL_) throw new DbUnavailableError(new Error('DATABASE_URL is not set'))
   if (!pool) {
     const local = /@(localhost|127\.0\.0\.1)[:/]/.test(URL_)
+    // TLS is configured explicitly below (full certificate checks), so drop the URL's sslmode hints.
+    const conn = new URL(URL_)
+    conn.searchParams.delete('sslmode')
+    conn.searchParams.delete('channel_binding')
     pool = new pg.Pool({
-      connectionString: URL_,
+      connectionString: conn.toString(),
       ssl: local ? false : { rejectUnauthorized: true },
       max: Number(process.env.PG_POOL_MAX) || (process.env.VERCEL ? 3 : 8),
       idleTimeoutMillis: 10_000,
